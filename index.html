@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Color Interaction: Same or Different?</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+
+<body>
+
+<div class="game-container">
+
+<header>
+
+<h1>Color Interaction: Same or Different?</h1>
+
+<p>
+Inspired by Josef Albers — decide whether the center colors are truly the same or different.
+Each round becomes more difficult as surrounding colors influence perception.
+</p>
+
+<div class="status">
+
+<span id="round">Round 1 / 10</span>
+
+<span id="score">Score: 0</span>
+
+</div>
+
+<div class="progress">
+
+<div id="progressBar"></div>
+
+</div>
+
+</header>
+
+
+
+<section class="panels">
+
+<div class="panel">
+
+<div class="label">
+Panel A
+</div>
+
+<div id="panelA" class="panelArea">
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div class="label">
+Panel B
+</div>
+
+<div id="panelB" class="panelArea">
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="answers">
+
+<div id="answerButtons">
+
+</div>
+
+</section>
+
+
+
+<section id="feedback">
+
+Look closely. Your eyes may be deceiving you.
+
+</section>
+
+
+
+<section class="controls">
+
+<button id="nextBtn" disabled>
+Next Round
+</button>
+
+<button id="restartBtn">
+Restart with New Colors
+</button>
+
+</section>
+
+
+</div>
+
+
+<script src="scorm.js"></script>
+<script src="game.js"></script>
+
+</body>
+
+</html>
