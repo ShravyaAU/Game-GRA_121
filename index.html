@@ -1,124 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Color Interaction: Same or Different?</title>
-
-<link rel="stylesheet" href="styles.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Interaction: Same or Different?</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
-
 <body>
+  <div class="game-container">
+    <header>
+      <h1>Color Interaction: Same or Different?</h1>
+      <p>
+        Inspired by Josef Albers — decide whether the center colors are truly the same or different.<br>
+        Each round becomes more difficult as surrounding colors influence perception.
+      </p>
 
-<div class="game-container">
+      <div class="status">
+        <span id="round">Round 1 / 10</span>
+        <span id="score">Score: 0</span>
+      </div>
 
-<header>
+      <div class="progress">
+        <div id="progressBar"></div>
+      </div>
+    </header>
 
-<h1>Color Interaction: Same or Different?</h1>
+    <section class="panels">
+      <div class="panel">
+        <div class="label">Panel A</div>
+        <div id="panelA" class="panelArea"></div>
+      </div>
 
-<p>
-Inspired by Josef Albers — decide whether the center colors are truly the same or different.<br>
-Each round becomes more difficult as surrounding colors influence perception.
-</p>
+      <div class="panel">
+        <div class="label">Panel B</div>
+        <div id="panelB" class="panelArea"></div>
+      </div>
+    </section>
 
-<div class="status">
+    <section class="answers">
+      <div id="answerButtons"></div>
+    </section>
 
-<span id="round">Round 1 / 10</span>
+    <section id="feedback">
+      Look closely. Your eyes may be deceiving you.
+    </section>
 
-<span id="score">Score: 0</span>
-
-</div>
-
-<div class="progress">
-
-<div id="progressBar"></div>
-
-</div>
-
-</header>
-
-
-
-<section class="panels">
-
-<div class="panel">
-
-<div class="label">
-Panel A
-</div>
-
-<div id="panelA" class="panelArea">
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="label">
-Panel B
-</div>
-
-<div id="panelB" class="panelArea">
-
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="answers">
-
-<div id="answerButtons">
-
-</div>
-
-</section>
-
-
-
-<section id="feedback">
-
-Look closely. Your eyes may be deceiving you.
-
-</section>
-
-
-
-<section class="controls">
-
-<button id="nextBtn" disabled>
-Next
-</button>
-
-<button id="restartBtn">
-Restart with New Colors
-</button>
-
-</section>
-
-
-</div>
-
-
-<script src="scorm.js"></script>
-<script src="game.js"></script>
-
-<div id="finalModal" class="modal hidden">
-  <div class="modal-content">
-    <h2>🎉 Game Complete!</h2>
-    <p id="finalScoreText"></p>
-    <button onclick="restartGame()">Play Again</button>
+    <section class="controls">
+      <button id="nextBtn" disabled>Next</button>
+      <button id="restartBtn">Restart with New Colors</button>
+    </section>
   </div>
-</div>
 
+  <div id="finalModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>🎉 Game Complete!</h2>
+      <p id="finalScoreText"></p>
+      <button id="playAgainBtn">Play Again</button>
+    </div>
+  </div>
+
+  <script src="scorm.js" defer></script>
+  <script src="game.js" defer></script>
 </body>
-
 </html>
