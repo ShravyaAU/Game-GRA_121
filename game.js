@@ -129,8 +129,8 @@ btn.disabled=true
 
 document.getElementById("feedback").textContent=
 correct?
-"Correct — perception fooled you."
-:"Not quite. Color context changed the perception."
+"Correct Color — Nice Eagle Eye."
+:"Incorrect — So close, but Nope."
 
 document.getElementById("nextBtn").disabled=false
 
