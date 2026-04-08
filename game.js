@@ -65,9 +65,7 @@ function renderAnswers() {
   options.forEach((opt) => {
     let btn = document.createElement("button");
     btn.textContent = opt.toUpperCase();
-
     btn.onclick = () => handleAnswer(opt);
-
     container.appendChild(btn);
   });
 }
@@ -102,7 +100,6 @@ function renderRound() {
   panelB.appendChild(sqB);
 
   renderAnswers();
-
   document.getElementById("nextBtn").disabled = true;
 }
 
@@ -148,7 +145,6 @@ function nextRound() {
   answered = false;
 
   document.getElementById("feedback").textContent = "New round.";
-
   renderRound();
 }
 
@@ -200,11 +196,11 @@ function restartGame() {
 }
 
 document.getElementById("nextBtn").onclick = nextRound;
-document.getElementById("restartBtn").onclick = restart;
+document.getElementById("restartBtn").onclick = restartGame;
 
 const playAgainBtn = document.getElementById("playAgainBtn");
 if (playAgainBtn) {
-  playAgainBtn.onclick = restart;
+  playAgainBtn.onclick = restartGame;
 }
 
 window.onload = () => {
