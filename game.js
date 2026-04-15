@@ -148,21 +148,34 @@ function nextRound() {
   renderRound();
 }
 
-function showFinalScreen() {
-  const modal = document.getElementById("finalModal");
-  const finalScoreText = document.getElementById("finalScoreText");
-
-  if (modal && finalScoreText) {
-    finalScoreText.textContent = `Your Score: ${score}/100`;
-    modal.classList.remove("hidden");
-  }
-}
-
 function hideFinalScreen() {
   const modal = document.getElementById("finalModal");
   if (modal) {
     modal.classList.add("hidden");
   }
+}
+
+function showFinalScreen() {
+  const modal = document.getElementById("finalModal");
+  const finalScoreText = document.getElementById("finalScoreText");
+  const finalNameText = document.getElementById("finalNameText");
+  const finalTimeText = document.getElementById("finalTimeText");
+  const finalInstructionsText = document.getElementById("finalInstructionsText");
+
+  let name = document.getElementById("studentName").value.trim();
+  if (name === "") {
+    name = "Anonymous";
+  }
+
+  const timestamp = new Date().toLocaleString();
+
+  finalScoreText.textContent = `Your Score: ${score}/100`;
+  finalNameText.textContent = `Name: ${name}`;
+  finalTimeText.textContent = `Timestamp: ${timestamp}`;
+  finalInstructionsText.textContent =
+    "Please take a complete screenshot of this screen, including your name, score, and timestamp, and upload it to Canvas.";
+
+  modal.classList.remove("hidden");
 }
 
 function finishGame() {
@@ -185,6 +198,11 @@ function finishGame() {
 
 function restartGame() {
   hideFinalScreen();
+
+  const nameInput = document.getElementById("studentName");
+  if (nameInput) {
+    nameInput.value = "";
+  }
 
   buildGame();
   roundIndex = 0;
