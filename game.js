@@ -162,19 +162,31 @@ function showFinalScreen() {
   const finalTimeText = document.getElementById("finalTimeText");
   const finalInstructionsText = document.getElementById("finalInstructionsText");
 
+  // Get student name
   let name = document.getElementById("studentName").value.trim();
   if (name === "") {
     name = "Anonymous";
   }
 
-  const timestamp = new Date().toLocaleString();
+  // Format timestamp (cleaner format)
+  const now = new Date();
+  const formattedTime = now.toLocaleString(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 
-  finalScoreText.textContent = `Your Score: ${score}/100`;
-  finalNameText.textContent = `Name: ${name}`;
-  finalTimeText.textContent = `Timestamp: ${timestamp}`;
+  // Set content (clean format)
+  finalScoreText.textContent = `${score} / 100 (${remark})`;
+  finalNameText.textContent = name;
+  finalTimeText.textContent = formattedTime;
+
   finalInstructionsText.textContent =
-    "Please take a complete screenshot of this screen, including your name, score, and timestamp, and upload it to Canvas.";
+    "Please capture a full screenshot of this screen (including your name, score, and completion time) and submit it on Canvas.";
 
+  // Show modal
   modal.classList.remove("hidden");
 }
 
