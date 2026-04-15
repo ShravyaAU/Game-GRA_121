@@ -57,15 +57,24 @@
   </div>
 
   <div id="finalModal" class="modal hidden">
-    <div class="modal-content">
-      <h2>🎉 Game Complete!</h2>
-      <p id="finalScoreText"></p>
-      <p id="finalNameText"></p>
-      <p id="finalTimeText"></p>
-      <p id="finalInstructionsText" class="final-instructions"></p>
-      <button id="playAgainBtn">Play Again</button>
+  <div class="modal-content">
+
+    <h2>🎉 Game Complete!</h2>
+
+    <div class="result-box">
+      <p class="score"><strong>Score:</strong> <span id="finalScoreText"></span></p>
+      <p><strong>Name:</strong> <span id="finalNameText"></span></p>
+      <p><strong>Completed on:</strong> <span id="finalTimeText"></span></p>
     </div>
+
+    <p class="final-instructions">
+      Please capture a full screenshot of this screen (including your name, score, and timestamp) and submit it on Canvas.
+    </p>
+
+    <button id="playAgainBtn">Play Again</button>
+
   </div>
+</div>
 
   <script src="scorm.js" defer></script>
   <script src="game.js" defer></script>
