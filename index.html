@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Color Interaction: Same or Different?</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="game-container">
     <header>
       <h1>Color Interaction: Same or Different?</h1>
       <p>
-        Inspired by Josef Albers — decide whether the center colors are truly the same or different.<br>
+        Inspired by Josef Albers — decide whether the center colors are truly the same or different.<br />
         Each round becomes more difficult as surrounding colors influence perception.
       </p>
+
+      <div class="name-input">
+        <label for="studentName">Enter Your Name:</label><br />
+        <input type="text" id="studentName" placeholder="Your name here" />
+      </div>
 
       <div class="status">
         <span id="round">Round 1 / 10</span>
@@ -55,6 +60,9 @@
     <div class="modal-content">
       <h2>🎉 Game Complete!</h2>
       <p id="finalScoreText"></p>
+      <p id="finalNameText"></p>
+      <p id="finalTimeText"></p>
+      <p id="finalInstructionsText" class="final-instructions"></p>
       <button id="playAgainBtn">Play Again</button>
     </div>
   </div>
