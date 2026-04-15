@@ -11,7 +11,7 @@ body {
   padding: 30px;
   background: white;
   border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
@@ -28,10 +28,16 @@ header p {
   margin-top: 15px;
 }
 
+.name-input label {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
 .name-input input {
   padding: 6px 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  width: 180px;
 }
 
 .status {
@@ -68,7 +74,7 @@ header p {
 
 .label {
   font-size: 12px;
-  letter-spacing: .2em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   margin-bottom: 8px;
   color: #666;
@@ -87,7 +93,7 @@ header p {
   width: 80px;
   height: 80px;
   border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .answers {
@@ -97,6 +103,7 @@ header p {
 #answerButtons {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 button {
@@ -154,10 +161,6 @@ button:disabled {
   background: #666;
 }
 
-/* ========================= */
-/* MODAL (FINAL SCREEN) */
-/* ========================= */
-
 .modal {
   position: fixed;
   inset: 0;
@@ -183,7 +186,6 @@ button:disabled {
   animation: pop 0.25s ease;
 }
 
-/* Result card */
 .result-box {
   background: #f7f7f7;
   padding: 14px 16px;
@@ -202,7 +204,6 @@ button:disabled {
   font-size: 1.05rem;
 }
 
-/* Instruction text */
 .final-instructions {
   margin-top: 14px;
   font-size: 0.92rem;
@@ -210,7 +211,6 @@ button:disabled {
   color: #444;
 }
 
-/* Animation */
 @keyframes pop {
   from {
     transform: scale(0.85);
