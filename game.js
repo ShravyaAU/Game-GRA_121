@@ -14,33 +14,29 @@ function clamp(value, min, max) {
 }
 
 function randomColor() {
-  return `rgb(${randomInt(20, 235)},${randomInt(20, 235)},${randomInt(20, 235)})`;
+  return `rgb(${randomInt(20, 235)}, ${randomInt(20, 235)}, ${randomInt(20, 235)})`;
 }
 
 function slightlyDifferent(color) {
-  let nums = color.match(/\d+/g).map(Number);
+  const nums = color.match(/\d+/g).map(Number);
   nums[0] = clamp(nums[0] + randomInt(-10, 10), 0, 255);
   nums[1] = clamp(nums[1] + randomInt(-10, 10), 0, 255);
   nums[2] = clamp(nums[2] + randomInt(-10, 10), 0, 255);
-  return `rgb(${nums[0]},${nums[1]},${nums[2]})`;
+  return `rgb(${nums[0]}, ${nums[1]}, ${nums[2]})`;
 }
 
 function buildRound(n) {
-  let same = [1, 3, 4, 6, 7, 9].includes(n);
+  const same = [1, 3, 4, 6, 7, 9].includes(n);
 
-  let bgA = randomColor();
-  let bgB = randomColor();
-
-  let center = randomColor();
-
-  let centerA = center;
-  let centerB = same ? center : slightlyDifferent(center);
+  const bgA = randomColor();
+  const bgB = randomColor();
+  const center = randomColor();
 
   return {
     bgA,
     bgB,
-    centerA,
-    centerB,
+    centerA: center,
+    centerB: same ? center : slightlyDifferent(center),
     answer: same ? "same" : "different",
   };
 }
@@ -57,13 +53,13 @@ function shuffle(arr) {
 }
 
 function renderAnswers() {
-  let container = document.getElementById("answerButtons");
+  const container = document.getElementById("answerButtons");
   container.innerHTML = "";
 
-  let options = shuffle(["same", "different"]);
+  const options = shuffle(["same", "different"]);
 
   options.forEach((opt) => {
-    let btn = document.createElement("button");
+    const btn = document.createElement("button");
     btn.textContent = opt.toUpperCase();
     btn.onclick = () => handleAnswer(opt);
     container.appendChild(btn);
@@ -71,7 +67,7 @@ function renderAnswers() {
 }
 
 function renderRound() {
-  let r = rounds[roundIndex];
+  const r = rounds[roundIndex];
 
   document.getElementById("round").textContent = `Round ${roundIndex + 1} / ${TOTAL_ROUNDS}`;
   document.getElementById("score").textContent = `Score: ${score}`;
@@ -79,8 +75,8 @@ function renderRound() {
   document.getElementById("progressBar").style.width =
     (roundIndex / TOTAL_ROUNDS) * 100 + "%";
 
-  let panelA = document.getElementById("panelA");
-  let panelB = document.getElementById("panelB");
+  const panelA = document.getElementById("panelA");
+  const panelB = document.getElementById("panelB");
 
   panelA.style.background = r.bgA;
   panelB.style.background = r.bgB;
@@ -88,11 +84,11 @@ function renderRound() {
   panelA.innerHTML = "";
   panelB.innerHTML = "";
 
-  let sqA = document.createElement("div");
+  const sqA = document.createElement("div");
   sqA.className = "centerSquare";
   sqA.style.background = r.centerA;
 
-  let sqB = document.createElement("div");
+  const sqB = document.createElement("div");
   sqB.className = "centerSquare";
   sqB.style.background = r.centerB;
 
@@ -108,19 +104,20 @@ function handleAnswer(choice) {
 
   answered = true;
 
-  let round = rounds[roundIndex];
-  let correct = choice === round.answer;
+  const round = rounds[roundIndex];
+  const correct = choice === round.answer;
 
   if (correct) score += 10;
 
-  let buttons = document.querySelectorAll("#answerButtons button");
-
+  const buttons = document.querySelectorAll("#answerButtons button");
   buttons.forEach((btn) => {
-    if (btn.textContent.toLowerCase() === round.answer) {
+    const text = btn.textContent.toLowerCase();
+
+    if (text === round.answer) {
       btn.classList.add("correct");
     }
 
-    if (btn.textContent.toLowerCase() === choice && choice !== round.answer) {
+    if (text === choice && choice !== round.answer) {
       btn.classList.add("wrong");
     }
 
@@ -152,6 +149,7 @@ function hideFinalScreen() {
   const modal = document.getElementById("finalModal");
   if (modal) {
     modal.classList.add("hidden");
+    modal.style.display = "none";
   }
 }
 
@@ -162,32 +160,42 @@ function showFinalScreen() {
   const finalTimeText = document.getElementById("finalTimeText");
   const finalInstructionsText = document.getElementById("finalInstructionsText");
 
-  // Get student name
+  if (!modal || !finalScoreText || !finalNameText || !finalTimeText || !finalInstructionsText) {
+    console.error("Final screen element missing");
+    return;
+  }
+
   let name = document.getElementById("studentName").value.trim();
   if (name === "") {
     name = "Anonymous";
   }
 
-  // Format timestamp (cleaner format)
   const now = new Date();
-  const formattedTime = now.toLocaleString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+  const formattedTime =
+    now.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }) +
+    " • " +
+    now.toLocaleTimeString(undefined, {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
-  // Set content (clean format)
+  let remark = "";
+  if (score >= 80) remark = "Excellent performance!";
+  else if (score >= 50) remark = "Good job!";
+  else remark = "Keep practicing!";
+
   finalScoreText.textContent = `${score} / 100 (${remark})`;
   finalNameText.textContent = name;
   finalTimeText.textContent = formattedTime;
-
   finalInstructionsText.textContent =
-    "Please capture a full screenshot of this screen (including your name, score, and completion time) and submit it on Canvas.";
+    "Please capture a full screenshot of this screen, including your name, score, and completion time, and submit it on Canvas.";
 
-  // Show modal
   modal.classList.remove("hidden");
+  modal.style.display = "flex";
 }
 
 function finishGame() {
@@ -211,17 +219,12 @@ function finishGame() {
 function restartGame() {
   hideFinalScreen();
 
-  const nameInput = document.getElementById("studentName");
-  if (nameInput) {
-    nameInput.value = "";
-  }
-
   buildGame();
   roundIndex = 0;
   score = 0;
   answered = false;
 
-  document.getElementById("feedback").textContent = "New round.";
+  document.getElementById("feedback").textContent = "Look closely. Your eyes may be deceiving you.";
   renderRound();
 }
 
