@@ -1,7 +1,7 @@
 const TOTAL_ROUNDS = 10;
 
 const supabaseUrl = "https://siicswvrpnpiyojgsphr.supabase.co";
-const supabaseKey = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpaWNzd3ZycG5waXlvZ2pzcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzk4MjIsImV4cCI6MjA5MTg1NTgyMn0.foFX6CCVpaVWoX0Qbiiz3t5zoDAJ_aIxK-G-35DU-E8";
 
 const supabase =
   window.supabase && typeof window.supabase.createClient === "function"
