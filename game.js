@@ -3,7 +3,7 @@ const TOTAL_ROUNDS = 10;
 const supabaseUrl = "https://siicswvrpnpiyojgsphr.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpaWNzd3ZycG5waXlvZ2pzcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzk4MjIsImV4cCI6MjA5MTg1NTgyMn0.foFX6CCVpaVWoX0Qbiiz3t5zoDAJ_aIxK-G-35DU-E8";
 
-const supabase =
+const supabaseClient =
   window.supabase && typeof window.supabase.createClient === "function"
     ? window.supabase.createClient(supabaseUrl, supabaseKey)
     : null;
@@ -168,7 +168,13 @@ function showFinalScreen() {
   const finalTimeText = document.getElementById("finalTimeText");
   const finalInstructionsText = document.getElementById("finalInstructionsText");
 
-  if (!modal || !finalScoreText || !finalNameText || !finalTimeText || !finalInstructionsText) {
+  if (
+    !modal ||
+    !finalScoreText ||
+    !finalNameText ||
+    !finalTimeText ||
+    !finalInstructionsText
+  ) {
     console.error("Final screen element missing");
     return;
   }
@@ -207,9 +213,9 @@ function showFinalScreen() {
 }
 
 async function getAttemptNumber(name) {
-  if (!supabase) return 1;
+  if (!supabaseClient) return 1;
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("game_attempts")
     .select("id")
     .eq("student_name", name);
@@ -223,13 +229,13 @@ async function getAttemptNumber(name) {
 }
 
 async function saveAttempt(name, scoreValue, attemptNo) {
-  if (!supabase) {
+  if (!supabaseClient) {
     console.error("Supabase client is not initialized.");
     return;
   }
 
   try {
-    const { error } = await supabase.from("game_attempts").insert([
+    const { error } = await supabaseClient.from("game_attempts").insert([
       {
         student_name: name,
         score: scoreValue,
@@ -291,7 +297,7 @@ window.onload = () => {
     scormInit();
   }
 
-  if (!supabase) {
+  if (!supabaseClient) {
     console.warn("Supabase client is not available. Check the script tag and API key.");
   }
 
