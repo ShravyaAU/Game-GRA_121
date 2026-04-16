@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
   <div class="game-container">
     <header>
       <h1>Color Interaction: Same or Different?</h1>
@@ -56,6 +57,7 @@
     </section>
   </div>
 
+  <!-- Final Modal -->
   <div id="finalModal" class="modal hidden">
     <div class="modal-content">
       <h2>🎉 Game Complete!</h2>
@@ -72,8 +74,12 @@
     </div>
   </div>
 
+  <!-- IMPORTANT: Supabase MUST come first -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Your scripts -->
   <script src="scorm.js" defer></script>
   <script src="game.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </body>
 </html>
