@@ -1,9 +1,12 @@
-const supabaseUrl = "https://siicswvrpnpiyojgsphr.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpaWNzd3ZycG5waXlvZ2pzcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzk4MjIsImV4cCI6MjA5MTg1NTgyMn0.foFX6CCVpaVWoX0Qbiiz3t5zoDAJ_aIxK-G-35DU-E8";
-
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
 const TOTAL_ROUNDS = 10;
+
+const supabaseUrl = "https://siicswvrpnpiyojgsphr.supabase.co";
+const supabaseKey = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+const supabase =
+  window.supabase && typeof window.supabase.createClient === "function"
+    ? window.supabase.createClient(supabaseUrl, supabaseKey)
+    : null;
 
 let roundIndex = 0;
 let score = 0;
@@ -203,37 +206,58 @@ function showFinalScreen() {
   modal.style.display = "flex";
 }
 
-function finishGame() {
-  if (typeof scormSetScore === "function") {
-    scormSetScore(score, 100);
+async function saveAttempt(name, scoreValue) {
+  if (!supabase) {
+    console.error("Supabase client is not initialized.");
+    return;
   }
 
-  if (typeof scormSetCompletion === "function") {
-    scormSetCompletion("completed");
-  }
+  try {
+    const { error } = await supabase.from("game_attempts").insert([
+      {
+        student_name: name,
+        score: scoreValue,
+        attempt_no: 1,
+      },
+    ]);
 
-  if (typeof scormSave === "function") {
-    scormSave();
+    if (error) {
+      console.error("Error saving attempt:", error);
+    } else {
+      console.log("Saved successfully!");
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
   }
+}
 
-  document.getElementById("feedback").textContent = `Final score ${score}/100`;
-  document.getElementById("nextBtn").disabled = true;
+async function finishGame() {
   let name = document.getElementById("studentName").value.trim();
   if (name === "") name = "Anonymous";
 
-  saveAttempt(name, score);
+  await saveAttempt(name, score);
+
+  document.getElementById("feedback").textContent = `Final score ${score}/100`;
+  document.getElementById("nextBtn").disabled = true;
+
   showFinalScreen();
 }
 
 function restartGame() {
   hideFinalScreen();
 
+  const nameInput = document.getElementById("studentName");
+  if (nameInput) {
+    nameInput.value = "";
+  }
+
   buildGame();
   roundIndex = 0;
   score = 0;
   answered = false;
 
-  document.getElementById("feedback").textContent = "Look closely. Your eyes may be deceiving you.";
+  document.getElementById("feedback").textContent =
+    "Look closely. Your eyes may be deceiving you.";
   renderRound();
 }
 
@@ -250,28 +274,10 @@ window.onload = () => {
     scormInit();
   }
 
+  if (!supabase) {
+    console.warn("Supabase client is not available. Check the script tag and API key.");
+  }
+
   buildGame();
   renderRound();
 };
-
-async function saveAttempt(name, score) {
-  try {
-    const { error } = await supabase
-      .from("game_attempts")
-      .insert([
-        {
-          student_name: name,
-          score: score,
-          attempt_no: 1
-        }
-      ]);
-
-    if (error) {
-      console.error("Error saving:", error);
-    } else {
-      console.log("Saved successfully!");
-    }
-  } catch (err) {
-    console.error("Unexpected error:", err);
-  }
-}
