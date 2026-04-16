@@ -1,7 +1,7 @@
 const TOTAL_ROUNDS = 10;
 
 const supabaseUrl = "https://siicswvrpnpiyojgsphr.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpaWNzd3ZycG5waXlvZ2pzcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzk4MjIsImV4cCI6MjA5MTg1NTgyMn0.foFX6CCVpaVWoX0Qbiiz3t5zoDAJ_aIxK-G-35DU-E8";
+const supabaseKey = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
 
 const supabase =
   window.supabase && typeof window.supabase.createClient === "function"
@@ -206,7 +206,23 @@ function showFinalScreen() {
   modal.style.display = "flex";
 }
 
-async function saveAttempt(name, scoreValue) {
+async function getAttemptNumber(name) {
+  if (!supabase) return 1;
+
+  const { data, error } = await supabase
+    .from("game_attempts")
+    .select("id")
+    .eq("student_name", name);
+
+  if (error) {
+    console.error("Error getting attempt count:", error);
+    return 1;
+  }
+
+  return (data ? data.length : 0) + 1;
+}
+
+async function saveAttempt(name, scoreValue, attemptNo) {
   if (!supabase) {
     console.error("Supabase client is not initialized.");
     return;
@@ -217,7 +233,7 @@ async function saveAttempt(name, scoreValue) {
       {
         student_name: name,
         score: scoreValue,
-        attempt_no: 1,
+        attempt_no: attemptNo,
       },
     ]);
 
@@ -235,7 +251,8 @@ async function finishGame() {
   let name = document.getElementById("studentName").value.trim();
   if (name === "") name = "Anonymous";
 
-  await saveAttempt(name, score);
+  const attemptNo = await getAttemptNumber(name);
+  await saveAttempt(name, score, attemptNo);
 
   document.getElementById("feedback").textContent = `Final score ${score}/100`;
   document.getElementById("nextBtn").disabled = true;
