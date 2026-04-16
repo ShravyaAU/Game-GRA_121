@@ -1,6 +1,6 @@
 const TOTAL_ROUNDS = 10;
 
-const supabaseUrl = "https://siicswvrpnpiyojgsphr.supabase.co";
+const supabaseUrl = "https://siicswvrpnpiyogjsphr.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpaWNzd3ZycG5waXlvZ2pzcGhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNzk4MjIsImV4cCI6MjA5MTg1NTgyMn0.foFX6CCVpaVWoX0Qbiiz3t5zoDAJ_aIxK-G-35DU-E8";
 
 const supabaseClient =
@@ -76,6 +76,7 @@ function renderAnswers() {
 
 function renderRound() {
   const r = rounds[roundIndex];
+  if (!r) return;
 
   document.getElementById("round").textContent = `Round ${roundIndex + 1} / ${TOTAL_ROUNDS}`;
   document.getElementById("score").textContent = `Score: ${score}`;
@@ -113,8 +114,9 @@ function handleAnswer(choice) {
   answered = true;
 
   const round = rounds[roundIndex];
-  const correct = choice === round.answer;
+  if (!round) return;
 
+  const correct = choice === round.answer;
   if (correct) score += 10;
 
   const buttons = document.querySelectorAll("#answerButtons button");
@@ -136,15 +138,17 @@ function handleAnswer(choice) {
     ? "Correct Color — Nice Eagle Eye."
     : "Incorrect — So close, but Nope.";
 
-  document.getElementById("nextBtn").disabled = false;
-
   if (roundIndex === TOTAL_ROUNDS - 1) {
+    document.getElementById("nextBtn").disabled = true;
     finishGame();
+    return;
   }
+
+  document.getElementById("nextBtn").disabled = false;
 }
 
 function nextRound() {
-  if (!answered) return;
+  if (!answered || roundIndex >= TOTAL_ROUNDS - 1) return;
 
   roundIndex++;
   answered = false;
@@ -254,6 +258,8 @@ async function saveAttempt(name, scoreValue, attemptNo) {
 }
 
 async function finishGame() {
+  document.getElementById("nextBtn").disabled = true;
+
   let name = document.getElementById("studentName").value.trim();
   if (name === "") name = "Anonymous";
 
@@ -261,8 +267,6 @@ async function finishGame() {
   await saveAttempt(name, score, attemptNo);
 
   document.getElementById("feedback").textContent = `Final score ${score}/100`;
-  document.getElementById("nextBtn").disabled = true;
-
   showFinalScreen();
 }
 
