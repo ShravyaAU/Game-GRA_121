@@ -218,6 +218,10 @@ function finishGame() {
 
   document.getElementById("feedback").textContent = `Final score ${score}/100`;
   document.getElementById("nextBtn").disabled = true;
+  let name = document.getElementById("studentName").value.trim();
+  if (name === "") name = "Anonymous";
+
+  saveAttempt(name, score);
   showFinalScreen();
 }
 
@@ -249,3 +253,25 @@ window.onload = () => {
   buildGame();
   renderRound();
 };
+
+async function saveAttempt(name, score) {
+  try {
+    const { error } = await supabase
+      .from("game_attempts")
+      .insert([
+        {
+          student_name: name,
+          score: score,
+          attempt_no: 1
+        }
+      ]);
+
+    if (error) {
+      console.error("Error saving:", error);
+    } else {
+      console.log("Saved successfully!");
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
+  }
+}
